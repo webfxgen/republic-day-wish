@@ -83,6 +83,7 @@
             z-index: 10;
             width: 90%;
             max-width: 450px;
+            /* Auto-fit height logic */
             max-height: 95vh; 
             display: flex;
             flex-direction: column;
@@ -130,7 +131,7 @@
         .chakra-container {
             width: 80px;
             height: 80px;
-            margin: 0 auto 1.5vh auto; 
+            margin: 0 auto 1.5vh auto; /* Responsive margin */
             position: relative;
             animation: spin 20s linear infinite; 
             flex-shrink: 0; 
@@ -522,12 +523,12 @@
 <body>
 
     <!-- Audio Player (Preloaded) - Changed to Calm Instrumental Flute -->
-    <audio id="bg-music" loop preload="auto">
+    <audio id="bg-music" loop preload="auto" autoplay>
         <source src="https://upload.wikimedia.org/wikipedia/commons/9/90/Sare_Jahan_Se_Acha_-_Music.ogg" type="audio/mpeg">
     </audio>
 
     <!-- Music Toggle Button -->
-    <button id="music-btn" onclick="toggleMusic(event)">🔇</button>
+    <button id="music-btn" onclick="toggleMusic(event)">🔊</button>
 
     <canvas id="bg-canvas"></canvas>
     <canvas id="confetti-canvas"></canvas>
