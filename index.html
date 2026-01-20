@@ -49,25 +49,27 @@
         /* --- Music Button --- */
         #music-btn {
             position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 100;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            top: 25px; /* Moved down slightly */
+            left: 25px; /* Moved right slightly */
+            z-index: 9999; /* Super high priority */
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             color: white;
-            width: 40px;
-            height: 40px;
+            width: 45px; /* Slightly larger target */
+            height: 45px;
             border-radius: 50%;
             cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.2rem;
-            backdrop-filter: blur(5px);
-            transition: 0.3s;
+            font-size: 1.3rem;
+            backdrop-filter: blur(10px);
+            transition: transform 0.2s, background 0.3s;
             animation: pulseBtn 3s infinite;
+            -webkit-tap-highlight-color: transparent; /* Remove mobile tap highlight */
         }
-        #music-btn:hover { background: rgba(255, 153, 51, 0.5); }
+        #music-btn:hover { background: rgba(255, 153, 51, 0.6); transform: scale(1.1); }
+        #music-btn:active { transform: scale(0.95); }
 
         /* Glassmorphism Card */
         .card {
@@ -81,7 +83,6 @@
             z-index: 10;
             width: 90%;
             max-width: 450px;
-            /* Auto-fit height logic */
             max-height: 95vh; 
             display: flex;
             flex-direction: column;
@@ -92,7 +93,7 @@
             transition: all 0.5s ease;
             position: relative;
             transform-style: preserve-3d;
-            animation: slideUpFade 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            animation: slideUpFade 1.2s cubic-bezier(0.2, 0.8, 0.2, 1); 
             background-clip: padding-box;
         }
 
@@ -112,8 +113,8 @@
             background-size: 300% 100%;
             z-index: -1;
             border-radius: 22px;
-            animation: tricolorFlow 3s linear infinite;
-            box-shadow: 0 0 30px rgba(255, 153, 51, 0.4);
+            animation: tricolorFlow 6s linear infinite; 
+            box-shadow: 0 0 30px rgba(255, 153, 51, 0.2); 
         }
 
         @keyframes tricolorFlow {
@@ -129,10 +130,10 @@
         .chakra-container {
             width: 80px;
             height: 80px;
-            margin: 0 auto 1.5vh auto; /* Responsive margin */
+            margin: 0 auto 1.5vh auto; 
             position: relative;
-            animation: spin 10s linear infinite;
-            flex-shrink: 0; /* Prevent crushing */
+            animation: spin 20s linear infinite; 
+            flex-shrink: 0; 
         }
 
         .chakra-img {
@@ -164,7 +165,7 @@
             -webkit-text-fill-color: transparent;
             font-weight: 800;
             letter-spacing: -1px;
-            animation: textShine 4s linear infinite;
+            animation: textShine 6s linear infinite; 
             flex-shrink: 0;
         }
 
@@ -269,7 +270,7 @@
         #selection-section {
             display: none;
             text-align: left;
-            animation: fadeIn 0.5s ease-in;
+            animation: fadeIn 0.8s ease-in;
             max-height: 50vh; /* Relative height */
             overflow-y: auto;
             scrollbar-width: thin;
@@ -294,12 +295,12 @@
             border-radius: 12px;
             margin-bottom: 10px;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
             font-size: 0.95rem;
             color: #ddd;
             opacity: 0; 
             transform: translateY(15px);
-            animation: fadeUp 0.5s forwards;
+            animation: fadeUp 0.8s forwards;
             white-space: pre-line;
             line-height: 1.4;
         }
@@ -338,7 +339,7 @@
         }
 
         /* --- Result Area --- */
-        #result-area { display: none; width: 100%; animation: fadeIn 0.5s ease-in; }
+        #result-area { display: none; width: 100%; animation: fadeIn 1s ease-in; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         
         .wish-card-display {
@@ -357,7 +358,7 @@
             top: 0; left: -100%;
             width: 100%; height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
-            animation: cardShine 3s infinite;
+            animation: cardShine 4s infinite; /* Slower shine */
         }
 
         @keyframes cardShine { 0% { left: -100%; } 50%, 100% { left: 100%; } }
@@ -520,13 +521,13 @@
 </head>
 <body>
 
-    <!-- Audio Player -->
-    <audio id="bg-music" loop>
-        <source src="https://github.com/user-attachments/files/24730483/26th_january_special.mp3" type="audio/mpeg">
+    <!-- Audio Player (Preloaded) - Changed to Calm Instrumental Flute -->
+    <audio id="bg-music" loop preload="auto">
+        <source src="https://upload.wikimedia.org/wikipedia/commons/transcoded/c/c2/Vande_Mataram_-_Instrumental.ogg/Vande_Mataram_-_Instrumental.ogg.mp3" type="audio/mpeg">
     </audio>
 
     <!-- Music Toggle Button -->
-    <button id="music-btn" onclick="toggleMusic()">🔇</button>
+    <button id="music-btn" onclick="toggleMusic(event)">🔇</button>
 
     <canvas id="bg-canvas"></canvas>
     <canvas id="confetti-canvas"></canvas>
@@ -602,32 +603,45 @@
     </div>
 
     <script>
-        // --- Music Logic ---
+        // --- Music Logic (Calm & Robust) ---
         const audio = document.getElementById('bg-music');
         const musicBtn = document.getElementById('music-btn');
-        let isPlaying = false;
+        audio.volume = 0.4; // Calm volume
 
-        function toggleMusic() {
-            if (isPlaying) {
+        function toggleMusic(e) {
+            // Prevent global listeners from double-firing
+            if (e) e.stopPropagation();
+
+            if (audio.paused) {
+                // Try playing and handle interruptions gracefully
+                audio.play().then(() => {
+                    musicBtn.innerHTML = '🔊';
+                }).catch(err => {
+                    console.log("Audio play failed/interrupted:", err);
+                    // Don't change icon if failed
+                });
+            } else {
                 audio.pause();
                 musicBtn.innerHTML = '🔇';
-            } else {
-                audio.play().then(() => {
-                    musicBtn.innerHTML = '🔊';
-                }).catch(e => console.log("Play error", e));
             }
-            isPlaying = !isPlaying;
         }
 
-        // Try to play music on interaction
-        function tryPlayMusic() {
-            if(!isPlaying) {
+        // Global Unlock for Mobile Autoplay Restrictions
+        const unlockAudio = () => {
+            if (audio.paused) {
                 audio.play().then(() => {
-                    isPlaying = true;
                     musicBtn.innerHTML = '🔊';
-                }).catch(e => console.log("Autoplay blocked"));
+                }).catch(() => {});
             }
-        }
+            // Remove listeners once unlocked
+            document.body.removeEventListener('click', unlockAudio);
+            document.body.removeEventListener('touchstart', unlockAudio);
+        };
+
+        // Listen for first interaction anywhere
+        document.body.addEventListener('click', unlockAudio);
+        document.body.addEventListener('touchstart', unlockAudio);
+
 
         // --- DATA: Wishes & UI Translations ---
         const wishesDB = {
@@ -748,7 +762,7 @@
         const bgCtx = bgCanvas.getContext('2d');
         let width, height;
         const particles = [];
-        const jets = [];
+        // Removed Jet Logic for Calm Tone
 
         function resize() {
             width = bgCanvas.width = window.innerWidth;
@@ -765,7 +779,7 @@
                 this.x = Math.random() * width;
                 this.y = height + Math.random() * 100;
                 this.r = Math.random() * 4 + 1; 
-                this.speed = Math.random() * 1 + 0.5;
+                this.speed = Math.random() * 0.5 + 0.2; // Slower particles
                 const colors = ['rgba(255, 153, 51, 0.4)', 'rgba(255, 255, 255, 0.3)', 'rgba(19, 136, 8, 0.4)'];
                 this.color = colors[Math.floor(Math.random() * colors.length)];
             }
@@ -783,51 +797,12 @@
         }
         for(let i=0; i<50; i++) particles.push(new Particle());
 
-        class Jet {
-            constructor(y, color, delay) {
-                this.x = -100; this.y = y; this.color = color;
-                this.speed = 8 + Math.random() * 2;
-                this.size = 2; this.trailLength = 200;
-                this.active = false;
-                setTimeout(() => { this.active = true; }, delay);
-            }
-            update() {
-                if (!this.active) return;
-                this.x += this.speed;
-                if (this.x > width + 300) this.active = false;
-                this.draw();
-            }
-            draw() {
-                const gradient = bgCtx.createLinearGradient(this.x, this.y, this.x - this.trailLength, this.y);
-                gradient.addColorStop(0, this.color);
-                gradient.addColorStop(1, 'transparent');
-                bgCtx.beginPath();
-                bgCtx.moveTo(this.x, this.y);
-                bgCtx.lineTo(this.x - this.trailLength, this.y);
-                bgCtx.strokeStyle = gradient;
-                bgCtx.lineWidth = 4;
-                bgCtx.stroke();
-                bgCtx.beginPath();
-                bgCtx.arc(this.x, this.y, 3, 0, Math.PI*2);
-                bgCtx.fillStyle = '#fff';
-                bgCtx.fill();
-            }
-        }
-        function spawnJets() {
-            const startY = Math.random() * (height / 2);
-            jets.push(new Jet(startY, '#FF9933', 0));
-            jets.push(new Jet(startY + 15, '#FFFFFF', 100));
-            jets.push(new Jet(startY + 30, '#138808', 200));
-        }
-        setInterval(spawnJets, 4000);
+        // Removed SpawnJets and Jet Class
 
         function animateBg() {
             bgCtx.clearRect(0,0,width,height);
             particles.forEach(p => p.update());
-            for (let i = jets.length - 1; i >= 0; i--) {
-                jets[i].update();
-                if (jets[i].x > width + 400) jets.splice(i, 1);
-            }
+            // No Jets
             requestAnimationFrame(animateBg);
         }
         animateBg();
@@ -849,7 +824,7 @@
                 document.getElementById('language-select').value = sharedLang;
                 
                 generateFinalCard(quoteText, sharedLang, parseInt(sharedQuoteIndex));
-                tryPlayMusic(); // Attempt to play music if user clicks/interacts
+                // Audio unlock will handle playing on next click
             }
         };
 
@@ -874,15 +849,12 @@
                 div.style.animationDelay = `${index * 0.1}s`;
                 div.onclick = () => {
                     generateFinalCard(wishText, selectedLang, index);
-                    tryPlayMusic(); // Try playing music on selection
                 };
                 wishesList.appendChild(div);
             });
 
             document.getElementById('input-section').style.display = 'none';
             document.getElementById('selection-section').style.display = 'block';
-            
-            tryPlayMusic(); // Try playing music on "Next" click
         }
 
         function backToInput() {
@@ -957,7 +929,7 @@
             window.location.reload();
         }
 
-        // 3D Tilt Logic (Disabled on mobile for usability)
+        // 3D Tilt Logic
         const card = document.getElementById('main-card');
         document.addEventListener('mousemove', (e) => {
             if (window.innerWidth > 480) { 
