@@ -25,14 +25,15 @@
 
         body {
             background: linear-gradient(135deg, #1a1a1a, #050505);
-            height: 100vh; /* Fixed height */
+            min-height: 100vh; /* Allow growth */
             width: 100vw;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden; /* STRICT NO SCROLL */
+            overflow-x: hidden;
+            overflow-y: auto; /* Allow scroll for payment modal safety */
             color: white;
-            padding: 0; /* Remove body padding on mobile to max space */
+            padding: 0;
             position: relative;
             perspective: 1000px;
         }
@@ -49,13 +50,13 @@
         /* --- Music Button --- */
         #music-btn {
             position: fixed;
-            top: 25px; /* Moved down slightly */
-            left: 25px; /* Moved right slightly */
-            z-index: 9999; /* Super high priority */
+            top: 25px;
+            left: 25px;
+            z-index: 9999;
             background: rgba(255, 255, 255, 0.15);
             border: 1px solid rgba(255, 255, 255, 0.3);
             color: white;
-            width: 45px; /* Slightly larger target */
+            width: 45px;
             height: 45px;
             border-radius: 50%;
             cursor: pointer;
@@ -66,10 +67,30 @@
             backdrop-filter: blur(10px);
             transition: transform 0.2s, background 0.3s;
             animation: pulseBtn 3s infinite;
-            -webkit-tap-highlight-color: transparent; /* Remove mobile tap highlight */
+            -webkit-tap-highlight-color: transparent;
         }
         #music-btn:hover { background: rgba(255, 153, 51, 0.6); transform: scale(1.1); }
         #music-btn:active { transform: scale(0.95); }
+
+        /* --- Visitor Counter --- */
+        #visitor-counter {
+            position: fixed;
+            top: 29px;
+            left: 80px;
+            z-index: 9998;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 8px 12px;
+            border-radius: 20px;
+            color: white;
+            font-size: 0.85rem;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
 
         /* Glassmorphism Card */
         .card {
@@ -85,6 +106,7 @@
             max-width: 450px;
             /* Auto-fit height logic */
             max-height: 95vh; 
+            margin: auto; /* Centering fix for scrollable body */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -103,7 +125,7 @@
             border-color: transparent;
             background: rgba(5, 5, 5, 0.98);
             box-shadow: 0 25px 50px rgba(0,0,0,0.9);
-            justify-content: space-evenly; /* Distribute space in final mode */
+            justify-content: space-evenly;
         }
 
         .card.final-mode::after {
@@ -131,7 +153,7 @@
         .chakra-container {
             width: 80px;
             height: 80px;
-            margin: 0 auto 1.5vh auto; /* Responsive margin */
+            margin: 0 auto 1.5vh auto;
             position: relative;
             animation: spin 20s linear infinite; 
             flex-shrink: 0; 
@@ -446,6 +468,31 @@
             width: 100%;
         }
 
+        /* Razorpay Button Customization Override */
+        form input[type="submit"], 
+        .razorpay-payment-button {
+            background: linear-gradient(45deg, #FF9933, #138808) !important;
+            color: white !important;
+            border: none !important;
+            border-radius: 12px !important;
+            padding: 12px 24px !important;
+            font-size: 0.95rem !important;
+            font-weight: bold !important;
+            font-family: 'Segoe UI', sans-serif !important;
+            cursor: pointer !important;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important;
+            transition: transform 0.2s, box-shadow 0.2s !important;
+            display: inline-block !important;
+            width: auto !important;
+            min-width: 180px;
+        }
+
+        .razorpay-payment-button:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4) !important;
+            background: linear-gradient(45deg, #138808, #FF9933) !important;
+        }
+
         /* --- SMART MOBILE SCALING (No Scroll Magic) --- */
         @media (max-width: 480px) {
             .card {
@@ -483,7 +530,12 @@
             .action-buttons { gap: 8px; }
             
             /* Support Button Compact */
-            .support-container { margin-top: 1.5vh; transform: scale(0.9); }
+            .support-container { margin-top: 1.5vh; }
+            .razorpay-payment-button {
+                padding: 10px 20px !important;
+                font-size: 0.85rem !important;
+                min-width: 140px;
+            }
         }
 
         /* Aggressive Scaling for Short Screens (Landscape/Small Phones) */
@@ -495,7 +547,8 @@
             .premium-name-text { font-size: 1.3rem; }
             .wish-card-display { padding: 10px; margin-bottom: 10px; }
             .quote { font-size: 0.8rem; line-height: 1.3; }
-            .support-container { margin-top: 5px; transform: scale(0.8); }
+            .support-container { margin-top: 5px; }
+            .razorpay-payment-button { padding: 8px 16px !important; }
         }
 
         @keyframes spin { 100% { transform: rotate(360deg); } }
@@ -524,11 +577,16 @@
 
     <!-- Audio Player (Preloaded) - Changed to Calm Instrumental Flute -->
     <audio id="bg-music" loop preload="auto" autoplay>
-        <source src="https://upload.wikimedia.org/wikipedia/commons/9/90/Sare_Jahan_Se_Acha_-_Music.ogg" type="audio/mpeg">
+        <source src="https://upload.wikimedia.org/wikipedia/commons/transcoded/c/c2/Vande_Mataram_-_Instrumental.ogg/Vande_Mataram_-_Instrumental.ogg.mp3" type="audio/mpeg">
     </audio>
 
     <!-- Music Toggle Button -->
     <button id="music-btn" onclick="toggleMusic(event)">🔊</button>
+
+    <!-- Visitor Counter -->
+    <div id="visitor-counter">
+        👁️ <span id="view-count">2025</span>
+    </div>
 
     <canvas id="bg-canvas"></canvas>
     <canvas id="confetti-canvas"></canvas>
@@ -604,6 +662,22 @@
     </div>
 
     <script>
+        // --- Visitor Counter Logic ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const countEl = document.getElementById('view-count');
+            let count = localStorage.getItem('page_views');
+            
+            // Initialize count if not exists (starting from 2025 for effect)
+            if (!count) {
+                count = 2025;
+            } else {
+                count = parseInt(count) + 1;
+            }
+            
+            localStorage.setItem('page_views', count);
+            countEl.innerText = count.toLocaleString();
+        });
+
         // --- Music Logic (Calm & Robust) ---
         const audio = document.getElementById('bg-music');
         const musicBtn = document.getElementById('music-btn');
@@ -614,12 +688,10 @@
             if (e) e.stopPropagation();
 
             if (audio.paused) {
-                // Try playing and handle interruptions gracefully
                 audio.play().then(() => {
                     musicBtn.innerHTML = '🔊';
                 }).catch(err => {
                     console.log("Audio play failed/interrupted:", err);
-                    // Don't change icon if failed
                 });
             } else {
                 audio.pause();
@@ -627,21 +699,40 @@
             }
         }
 
-        // Global Unlock for Mobile Autoplay Restrictions
+        // 1. Attempt Autoplay on Load
+        window.addEventListener('load', () => {
+            const playPromise = audio.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    // Autoplay started!
+                    musicBtn.innerHTML = '🔊';
+                }).catch(error => {
+                    // Autoplay was prevented.
+                    console.log("Autoplay blocked. Waiting for interaction.");
+                    musicBtn.innerHTML = '🔇'; // Set to mute icon if blocked
+                });
+            }
+        });
+
+        // 2. Unlock on Interaction (Mobile/Browser Policy)
         const unlockAudio = () => {
             if (audio.paused) {
                 audio.play().then(() => {
                     musicBtn.innerHTML = '🔊';
-                }).catch(() => {});
+                    // Remove listeners only if playback started successfully
+                    document.body.removeEventListener('click', unlockAudio);
+                    document.body.removeEventListener('touchstart', unlockAudio);
+                    document.body.removeEventListener('keydown', unlockAudio);
+                }).catch(() => {
+                    // Interaction didn't unlock (rare, but possible), keep listeners
+                });
             }
-            // Remove listeners once unlocked
-            document.body.removeEventListener('click', unlockAudio);
-            document.body.removeEventListener('touchstart', unlockAudio);
         };
 
-        // Listen for first interaction anywhere
+        // Listen for ANY interaction to unlock audio
         document.body.addEventListener('click', unlockAudio);
         document.body.addEventListener('touchstart', unlockAudio);
+        document.body.addEventListener('keydown', unlockAudio);
 
 
         // --- DATA: Wishes & UI Translations ---
@@ -763,7 +854,7 @@
         const bgCtx = bgCanvas.getContext('2d');
         let width, height;
         const particles = [];
-        // Removed Jet Logic for Calm Tone
+        const jets = [];
 
         function resize() {
             width = bgCanvas.width = window.innerWidth;
