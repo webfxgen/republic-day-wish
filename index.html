@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Happy Republic Day 2025 | Special Wish</title>
     
-    <!-- Meta Tags for Beautiful Link Previews -->
     <meta name="description" content="Celebrate the spirit of India! Create and share your personalized Republic Day 3D greeting card.">
     <meta property="og:title" content="🇮🇳 Happy Republic Day! I have a surprise for you.">
     <meta property="og:description" content="Click to see a special 3D animated wish made just for you. Jai Hind!">
@@ -26,13 +25,14 @@
 
         body {
             background: linear-gradient(135deg, #1a1a1a, #050505);
-            min-height: 100vh;
+            height: 100vh; /* Fixed height */
+            width: 100vw;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            overflow: hidden; /* STRICT NO SCROLL */
             color: white;
-            padding: 15px;
+            padding: 0; /* Remove body padding on mobile to max space */
             position: relative;
             perspective: 1000px;
         }
@@ -46,6 +46,29 @@
         #bg-canvas { z-index: 0; }
         #confetti-canvas { z-index: 20; }
 
+        /* --- Music Button --- */
+        #music-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            backdrop-filter: blur(5px);
+            transition: 0.3s;
+            animation: pulseBtn 3s infinite;
+        }
+        #music-btn:hover { background: rgba(255, 153, 51, 0.5); }
+
         /* Glassmorphism Card */
         .card {
             background: rgba(20, 20, 20, 0.85);
@@ -56,8 +79,15 @@
             border-radius: 20px;
             text-align: center;
             z-index: 10;
-            width: 100%;
+            width: 90%;
             max-width: 450px;
+            /* Auto-fit height logic */
+            max-height: 95vh; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            
             box-shadow: 0 15px 35px rgba(0,0,0,0.5);
             transition: all 0.5s ease;
             position: relative;
@@ -71,6 +101,7 @@
             border-color: transparent;
             background: rgba(5, 5, 5, 0.98);
             box-shadow: 0 25px 50px rgba(0,0,0,0.9);
+            justify-content: space-evenly; /* Distribute space in final mode */
         }
 
         .card.final-mode::after {
@@ -98,9 +129,10 @@
         .chakra-container {
             width: 80px;
             height: 80px;
-            margin: 0 auto 20px;
+            margin: 0 auto 1.5vh auto; /* Responsive margin */
             position: relative;
             animation: spin 10s linear infinite;
+            flex-shrink: 0; /* Prevent crushing */
         }
 
         .chakra-img {
@@ -125,7 +157,7 @@
 
         h1 {
             font-size: 2.2rem;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.5vh;
             background: linear-gradient(to right, var(--saffron), var(--white), var(--green), var(--saffron));
             background-size: 300% auto;
             -webkit-background-clip: text;
@@ -133,13 +165,14 @@
             font-weight: 800;
             letter-spacing: -1px;
             animation: textShine 4s linear infinite;
+            flex-shrink: 0;
         }
 
         @keyframes textShine { to { background-position: 300% center; } }
 
-        p.subtitle { color: #aaa; margin-bottom: 2rem; font-size: 0.95rem; letter-spacing: 1px; text-transform: uppercase; }
+        p.subtitle { color: #aaa; margin-bottom: 2vh; font-size: 0.95rem; letter-spacing: 1px; text-transform: uppercase; flex-shrink: 0; }
 
-        .input-group { position: relative; margin-bottom: 1rem; transform: translateZ(20px); }
+        .input-group { position: relative; margin-bottom: 1.5vh; width: 100%; }
 
         input, select {
             width: 100%;
@@ -183,6 +216,7 @@
             cursor: pointer;
             border: 1px dashed rgba(255,255,255,0.3);
             transition: 0.3s;
+            width: 100%;
         }
         #name-preview-box:hover {
             background: rgba(255,255,255,0.2);
@@ -193,7 +227,7 @@
 
         .btn-primary {
             width: 100%;
-            padding: 16px;
+            padding: 15px;
             background: linear-gradient(45deg, var(--saffron), var(--green));
             border: none;
             border-radius: 12px;
@@ -207,7 +241,6 @@
             position: relative;
             overflow: hidden;
             animation: pulseBtn 2s infinite;
-            transform: translateZ(20px);
             margin-top: 10px;
         }
         
@@ -232,21 +265,17 @@
             100% { box-shadow: 0 0 0 0 rgba(255, 153, 51, 0); }
         }
 
-        .btn-primary:hover { 
-            transform: translateY(-2px) translateZ(20px); 
-            box-shadow: 0 10px 25px rgba(19, 136, 8, 0.4); 
-            animation: none; 
-        }
-
+        /* --- Selection Area --- */
         #selection-section {
             display: none;
             text-align: left;
             animation: fadeIn 0.5s ease-in;
-            max-height: 400px;
+            max-height: 50vh; /* Relative height */
             overflow-y: auto;
             scrollbar-width: thin;
             scrollbar-color: var(--saffron) rgba(255,255,255,0.1);
             padding-right: 5px;
+            width: 100%;
         }
         
         #selection-section h3 {
@@ -263,7 +292,7 @@
             border: 1px solid rgba(255,255,255,0.1);
             padding: 15px;
             border-radius: 12px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             font-size: 0.95rem;
@@ -271,19 +300,12 @@
             opacity: 0; 
             transform: translateY(15px);
             animation: fadeUp 0.5s forwards;
-            white-space: pre-line; /* Allows 4 lines to break correctly */
-            line-height: 1.5;
+            white-space: pre-line;
+            line-height: 1.4;
         }
 
         @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 
-        .wish-option:hover {
-            background: rgba(255,255,255,0.15);
-            border-color: var(--saffron);
-            transform: scale(1.02) translateX(5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-        
         .back-btn {
             background: transparent;
             border: 1px solid #555;
@@ -295,20 +317,38 @@
             width: 100%;
             transition: 0.3s;
         }
-        .back-btn:hover { background: rgba(255,255,255,0.1); color: white; border-color: #777; }
 
-        #result-area { display: none; margin-top: 1rem; animation: fadeIn 0.5s ease-in; transform: translateZ(20px); }
+        /* Credit Link Style */
+        .credit-link {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            z-index: 50;
+            transition: 0.3s;
+            background: rgba(0,0,0,0.2);
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        .credit-link:hover {
+            color: var(--white);
+            background: var(--saffron);
+        }
+
+        /* --- Result Area --- */
+        #result-area { display: none; width: 100%; animation: fadeIn 0.5s ease-in; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         
         .wish-card-display {
             background: rgba(0,0,0,0.3);
             border-radius: 15px;
-            padding: 25px 20px;
-            margin-bottom: 1.5rem;
+            padding: 15px;
+            margin-bottom: 1.5vh;
             border: 1px solid rgba(255,255,255,0.1);
             position: relative;
             overflow: hidden;
-            transform: translateZ(30px);
         }
 
         .wish-card-display::before {
@@ -323,8 +363,8 @@
         @keyframes cardShine { 0% { left: -100%; } 50%, 100% { left: 100%; } }
 
         .wish-text {
-            font-size: 1.15rem;
-            line-height: 1.6;
+            font-size: 1.1rem;
+            line-height: 1.5;
             color: #fff;
             text-align: center;
             position: relative;
@@ -334,7 +374,7 @@
         }
 
         .premium-name-text {
-            font-size: 2.2rem;
+            font-size: 2rem;
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -342,19 +382,19 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
-            margin-bottom: 5px;
+            margin-bottom: 2px;
             display: inline-block;
         }
 
         .quote {
             font-style: italic;
             color: #fff;
-            margin: 15px 0;
+            margin: 10px 0;
             display: block;
-            font-size: 1.05rem;
+            font-size: 1rem;
             text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-            white-space: pre-line; /* Respects line breaks for the poem */
-            line-height: 1.6;
+            white-space: pre-line;
+            line-height: 1.4;
         }
         
         .footer-sign {
@@ -363,7 +403,7 @@
             -webkit-text-fill-color: transparent;
             font-weight: bold;
             font-size: 1.2rem;
-            margin-top: 15px;
+            margin-top: 10px;
             display: block;
             filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));
         }
@@ -371,44 +411,90 @@
         .action-buttons {
             display: flex;
             gap: 10px;
-            flex-direction: column;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
         }
 
-        .btn-whatsapp, .btn-download {
+        .btn-whatsapp, .btn-create {
             border: none;
             padding: 12px;
-            border-radius: 10px;
+            border-radius: 12px;
             font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
             transition: 0.2s;
             color: white;
-            transform: translateZ(20px);
+            flex: 1;
+            font-size: 0.95rem;
         }
 
         .btn-whatsapp { background: #25D366; }
-        .btn-whatsapp:hover { background: #1ebc57; transform: translateY(-2px) translateZ(20px); }
-
-        .btn-download { background: #333; border: 1px solid #555; }
-        .btn-download:hover { background: #444; transform: translateY(-2px) translateZ(20px); }
-
-        .reset-link {
-            margin-top: 20px; font-size: 0.85rem; color: #888; 
-            cursor: pointer; text-decoration: underline;
-            background: none; border: none; padding: 5px;
-        }
+        .btn-create { background: #333; border: 1px solid #555; }
 
         .support-container {
-            margin-top: 25px;
+            margin-top: 2vh;
             display: flex;
             justify-content: center;
             opacity: 0.9;
             transition: opacity 0.3s;
+            width: 100%;
         }
-        .support-container:hover { opacity: 1; }
+
+        /* --- SMART MOBILE SCALING (No Scroll Magic) --- */
+        @media (max-width: 480px) {
+            .card {
+                padding: 1.5rem 1.2rem;
+                width: 95%;
+                border-radius: 15px;
+            }
+
+            .credit-link {
+                top: 10px;
+                right: 10px;
+                font-size: 0.65rem;
+                padding: 2px 6px;
+            }
+
+            /* Shrink header */
+            h1 { font-size: 1.6rem; margin-bottom: 2px; }
+            p.subtitle { font-size: 0.8rem; margin-bottom: 1.2vh; }
+
+            /* Shrink Chakra */
+            .chakra-container { width: 50px; height: 50px; margin-bottom: 1vh; }
+
+            /* Shrink Name & Text in Final View */
+            .premium-name-text { font-size: 1.6rem; }
+            .wish-text { font-size: 0.9rem; }
+            .quote { font-size: 0.85rem; margin: 8px 0; }
+            .footer-sign { font-size: 1rem; margin-top: 8px; }
+
+            /* Inputs */
+            .input-group { margin-bottom: 1vh; }
+            input, select, .btn-primary { padding: 12px; font-size: 16px; /* No Zoom */ }
+
+            /* Buttons */
+            .btn-whatsapp, .btn-create { padding: 10px; font-size: 0.9rem; }
+            .action-buttons { gap: 8px; }
+            
+            /* Support Button Compact */
+            .support-container { margin-top: 1.5vh; transform: scale(0.9); }
+        }
+
+        /* Aggressive Scaling for Short Screens (Landscape/Small Phones) */
+        @media (max-height: 650px) {
+            .card { padding: 1rem; }
+            .chakra-container { width: 40px; height: 40px; margin-bottom: 5px; }
+            h1 { font-size: 1.4rem; }
+            p.subtitle { display: none; } /* Hide subtitle to save space */
+            .premium-name-text { font-size: 1.3rem; }
+            .wish-card-display { padding: 10px; margin-bottom: 10px; }
+            .quote { font-size: 0.8rem; line-height: 1.3; }
+            .support-container { margin-top: 5px; transform: scale(0.8); }
+        }
 
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
@@ -430,66 +516,17 @@
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
-
-        /* --- Mobile Optimization --- */
-        @media (max-width: 480px) {
-            .card {
-                padding: 1.5rem;
-                max-width: 100%;
-            }
-
-            h1 {
-                font-size: 1.8rem;
-                letter-spacing: normal;
-            }
-            
-            p.subtitle {
-                font-size: 0.85rem;
-                margin-bottom: 1.5rem;
-            }
-
-            .premium-name-text {
-                font-size: 1.6rem;
-                white-space: normal;
-                word-wrap: break-word;
-            }
-            
-            .chakra-container {
-                width: 60px;
-                height: 60px;
-                margin-bottom: 15px;
-            }
-            
-            .input-group {
-                margin-bottom: 0.8rem;
-            }
-            
-            input, select, .btn-primary {
-                padding: 12px;
-                font-size: 16px; /* Prevents iOS auto-zoom */
-            }
-            
-            .wish-text {
-                font-size: 1rem;
-            }
-            
-            .quote {
-                font-size: 0.95rem;
-            }
-            
-            /* Disable 3D transforms on small screens to save space/bugs */
-            .input-group, .btn-primary, .btn-whatsapp, .btn-download, #result-area {
-                transform: none !important;
-            }
-            
-            .wish-card-display {
-                transform: none !important;
-                padding: 20px 15px;
-            }
-        }
     </style>
 </head>
 <body>
+
+    <!-- Audio Player -->
+    <audio id="bg-music" loop>
+        <source src="https://github.com/user-attachments/files/24730483/26th_january_special.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Music Toggle Button -->
+    <button id="music-btn" onclick="toggleMusic()">🔇</button>
 
     <canvas id="bg-canvas"></canvas>
     <canvas id="confetti-canvas"></canvas>
@@ -539,23 +576,24 @@
 
         <!-- STEP 3: Final Result -->
         <div id="result-area">
+            <!-- Credit Link inside Result Area so it shows only on final page -->
+            <a href="https://www.webfxgen.in/" target="_blank" class="credit-link">More wishes @ WebFxGen.in</a>
+
             <div class="wish-card-display" id="capture-area">
                 <div class="wish-text" id="wish-message"></div>
             </div>
 
             <div class="action-buttons">
                 <button class="btn-whatsapp" onclick="shareOnWhatsApp()">
-                    <span>Share on WhatsApp</span>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                    <span>Share</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
                 </button>
-                <button class="btn-download" onclick="downloadImage()">
-                    <span>Download Image</span>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <button class="btn-create" onclick="reset()">
+                    <span>Create New</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                 </button>
             </div>
             
-            <button class="reset-link" onclick="reset()">Create New Wish</button>
-
             <!-- Support Button -->
             <div class="support-container">
                 <form><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_S0CCnxIwut7hNL" async> </script> </form>
@@ -564,6 +602,33 @@
     </div>
 
     <script>
+        // --- Music Logic ---
+        const audio = document.getElementById('bg-music');
+        const musicBtn = document.getElementById('music-btn');
+        let isPlaying = false;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                audio.pause();
+                musicBtn.innerHTML = '🔇';
+            } else {
+                audio.play().then(() => {
+                    musicBtn.innerHTML = '🔊';
+                }).catch(e => console.log("Play error", e));
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // Try to play music on interaction
+        function tryPlayMusic() {
+            if(!isPlaying) {
+                audio.play().then(() => {
+                    isPlaying = true;
+                    musicBtn.innerHTML = '🔊';
+                }).catch(e => console.log("Autoplay blocked"));
+            }
+        }
+
         // --- DATA: Wishes & UI Translations ---
         const wishesDB = {
             english: {
@@ -777,16 +842,14 @@
             const sharedQuoteIndex = urlParams.get('q');
 
             if (sharedName && sharedLang && sharedQuoteIndex !== null) {
-                // Determine quote text from index
                 const quoteText = wishesDB[sharedLang].quotes[parseInt(sharedQuoteIndex)];
                 
-                // Hide inputs immediately
                 document.getElementById('input-section').style.display = 'none';
                 document.getElementById('username').value = decodeURIComponent(sharedName);
                 document.getElementById('language-select').value = sharedLang;
                 
-                // Render Final Card
                 generateFinalCard(quoteText, sharedLang, parseInt(sharedQuoteIndex));
+                tryPlayMusic(); // Attempt to play music if user clicks/interacts
             }
         };
 
@@ -800,7 +863,6 @@
 
             document.getElementById('main-card').classList.remove('final-mode');
 
-            // Get translated quotes
             const wishes = wishesDB[selectedLang].quotes;
             const wishesList = document.getElementById('wishes-list');
             wishesList.innerHTML = ''; 
@@ -810,13 +872,17 @@
                 div.className = 'wish-option';
                 div.innerText = wishText;
                 div.style.animationDelay = `${index * 0.1}s`;
-                // Pass INDEX to generateFinalCard for sharing logic
-                div.onclick = () => generateFinalCard(wishText, selectedLang, index);
+                div.onclick = () => {
+                    generateFinalCard(wishText, selectedLang, index);
+                    tryPlayMusic(); // Try playing music on selection
+                };
                 wishesList.appendChild(div);
             });
 
             document.getElementById('input-section').style.display = 'none';
             document.getElementById('selection-section').style.display = 'block';
+            
+            tryPlayMusic(); // Try playing music on "Next" click
         }
 
         function backToInput() {
@@ -847,7 +913,6 @@
             
             document.getElementById('main-card').classList.add('final-mode');
             
-            // Confetti
             const confettiCanvas = document.getElementById('confetti-canvas');
             const cCtx = confettiCanvas.getContext('2d');
             let pieces = [];
@@ -868,7 +933,6 @@
             }
             animConfetti();
             
-            // Store data for sharing
             messageBox.dataset.quote = selectedQuote;
             messageBox.dataset.lang = lang;
             messageBox.dataset.index = quoteIndex;
@@ -879,8 +943,6 @@
             const lang = document.getElementById('wish-message').dataset.lang;
             const index = document.getElementById('wish-message').dataset.index;
             
-            // Construct the clean share URL
-            // Uses current URL base + query params
             const shareUrl = window.location.origin + window.location.pathname + 
                              `?n=${encodeURIComponent(name)}&l=${lang}&q=${index}`;
 
@@ -890,50 +952,12 @@
             window.open(url, '_blank');
         }
 
-        function downloadImage() {
-            const captureElement = document.getElementById('main-card');
-            const loader = document.getElementById('loader');
-            const actions = document.querySelector('.action-buttons');
-            const resetBtn = document.querySelector('.reset-link');
-            const supportBtn = document.querySelector('.support-container');
-
-            const currentTransform = captureElement.style.transform;
-            captureElement.style.transform = 'none';
-
-            loader.style.display = 'flex';
-            actions.style.display = 'none';
-            resetBtn.style.display = 'none';
-            supportBtn.style.display = 'none';
-
-            setTimeout(() => {
-                html2canvas(captureElement, {
-                    backgroundColor: '#1a1a1a', 
-                    scale: 2, 
-                    logging: false,
-                    useCORS: true
-                }).then(canvas => {
-                    const link = document.createElement('a');
-                    link.download = `Republic-Day-Wish.png`;
-                    link.href = canvas.toDataURL('image/png');
-                    link.click();
-                    loader.style.display = 'none';
-                    actions.style.display = 'flex';
-                    resetBtn.style.display = 'block';
-                    supportBtn.style.display = 'flex';
-                    captureElement.style.transform = currentTransform;
-                });
-            }, 100);
-        }
-
         function reset() {
-            // Remove query params from URL without refreshing (clean URL)
             window.history.pushState({}, document.title, window.location.pathname);
-            
-            // Reload page to reset state completely
             window.location.reload();
         }
 
-        // 3D Tilt Logic
+        // 3D Tilt Logic (Disabled on mobile for usability)
         const card = document.getElementById('main-card');
         document.addEventListener('mousemove', (e) => {
             if (window.innerWidth > 480) { 
